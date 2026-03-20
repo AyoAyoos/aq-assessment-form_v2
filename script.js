@@ -229,6 +229,11 @@ function validateStep(step) {
       showError('jobPref', 'Please select at least 1 job preference.');
       valid = false;
     }
+    const feedback = document.querySelector('input[name="feedback"]:checked');
+    if (!feedback) {
+      showError('feedback', 'Please share your opinion.');
+      valid = false;
+    }
   }
 
   return valid;
@@ -275,6 +280,7 @@ function collectData() {
     responses: {},
     dsaMarks:   document.getElementById('dsaMarks').value.trim(),
     jobPreferences: [...document.querySelectorAll('input[name="jobPref"]:checked')].map(c => c.value),
+    feedback: document.querySelector('input[name="feedback"]:checked')?.value || null,
     submittedAt: new Date().toISOString(),
   };
 
@@ -329,6 +335,7 @@ async function submitForm() {
       job_prefs:     formData.jobPreferences,
       aq_score:      formData.aqScore,
       aq_category:   formData.aqCategory.label,
+      feedback:      formData.feedback,
     });
 
     if (error) {
