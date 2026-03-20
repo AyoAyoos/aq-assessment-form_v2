@@ -905,3 +905,12 @@
     pointer-events: all;
   }
   .consent-footer-note { text-align: center; font-size: 12px; color: var(--md-outline); }
+
+
+
+  #consentBtn, .consent-cta {
+    display: flex !important;
+    opacity: 1 !important;
+    pointer-events: all !important;
+    visibility: visible !important;
+  }
