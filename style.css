@@ -888,12 +888,19 @@
     font-size: 13.5px; font-weight: 500;
     color: var(--md-on-primary-cont); line-height: 1.6;
   }
-  .consent-cta {
-    width: 100%; justify-content: center;
-    padding: 14px 24px; font-size: 15px;
+  /* REPLACE with */
+.consent-cta {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
+    font-size: 15px;
     border-radius: var(--radius-lg);
-    opacity: 0.45; pointer-events: none;
+    opacity: 1;
+    pointer-events: all;
     transition: opacity 0.25s, transform 0.2s;
   }
-  .consent-cta.active { opacity: 1; pointer-events: all; }
+  .consent-cta.active {
+    opacity: 1;
+    pointer-events: all;
+  }
   .consent-footer-note { text-align: center; font-size: 12px; color: var(--md-outline); }
