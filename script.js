@@ -368,3 +368,36 @@ function showSuccess(data) {
 function escHtml(str) {
   return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
+
+function handleConsentCheck(checkbox) {
+    document.getElementById('consentBtn').classList.toggle('active', checkbox.checked);
+    if (checkbox.checked) document.getElementById('err-consent').textContent = '';
+  }
+  
+  function acceptConsent() {
+    const checkbox = document.getElementById('consentCheckbox');
+    const errEl    = document.getElementById('err-consent');
+    const agreeBox = document.getElementById('consentAgreeBox');
+  
+    if (!checkbox.checked) {
+      errEl.textContent = 'Please check the box to confirm your consent.';
+      agreeBox.classList.remove('shake');
+      void agreeBox.offsetWidth;
+      agreeBox.classList.add('shake');
+      return;
+    }
+  
+    const screen = document.getElementById('consentScreen');
+    screen.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    screen.style.opacity    = '0';
+    screen.style.transform  = 'translateY(-12px)';
+  
+    setTimeout(() => {
+      screen.style.display = 'none';
+      document.getElementById('progressRail').style.display  = 'block';
+      document.getElementById('stepNav').style.display       = 'flex';
+      document.getElementById('mainContainer').style.display = 'block';
+      document.getElementById('navBar').style.display        = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 300);
+  }
