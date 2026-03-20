@@ -1,3 +1,10 @@
+
+
+const SUPABASE_URL  = 'https://fakwubkkjwzagudagvot.supabase.co'; // 👈 paste yours
+const SUPABASE_KEY  = 'sb_publishable_e9f_u0ewwy1WR3ZYJiW8Ow_271yFuVK';                // 👈 paste yours
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+
 /* ══════════════════════════════════════════════════
    AQ Assessment — script.js
    Multi-step form logic, validation & submission
@@ -308,30 +315,33 @@ async function submitForm() {
     document.head.appendChild(s);
   }
 
-  const formData = collectData();
-
   try {
-    /* ── Replace the URL below with your actual API endpoint ──
-       POST body is JSON. Expected response: { success: true }
-       If using Supabase directly, use the Supabase JS client here.
-    ──────────────────────────────────────────────────────────── */
-    const ENDPOINT = '/api/submit'; // 👈 Change this to your backend URL
+    const formData = collectData();
 
-    const response = await fetch(ENDPOINT, {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(formData),
+    const { error } = await db.from('responses').insert({
+      full_name:     formData.personalInfo.fullName,
+      email:         formData.personalInfo.email,
+      university:    formData.personalInfo.universityName,
+      university_id: formData.personalInfo.universityId,
+      answers:       formData.responses,
+      dsa_marks:     formData.dsaMarks,
+      job_prefs:     formData.jobPreferences,
+      aq_score:      formData.aqScore,
+      aq_category:   formData.aqCategory.label,
     });
 
-    if (!response.ok) throw new Error(`Server error: ${response.status}`);
+    if (error) {
+      if (error.code === '23505') {
+        alert('This email has already submitted a response.');
+      } else {
+        throw error;
+      }
+      return;
+    }
 
     showSuccess(formData);
-
   } catch (err) {
-    /* ─── Dev/Demo mode: show success anyway ───────────────── */
-    console.warn('API not connected — showing demo success:', err.message);
-    console.log('Form data that would be sent:', formData);
-    showSuccess(formData);
+    alert('Something went wrong. Please try again.\n\n' + err.message);
   } finally {
     btnNext.disabled = false;
     btnNext.innerHTML = '<span class="material-icons-round">send</span> Submit';
